@@ -4,13 +4,11 @@ import os
 
 app = Flask(__name__)
 
-# Database config
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app2.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app)
 
-# Model
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -18,7 +16,6 @@ class Todo(db.Model):
     def __repr__(self):
         return f'<Todo {self.id} - {self.title}>'
 
-# Routes
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -49,13 +46,8 @@ def update(id):
     return render_template('update.html', todo=todo)
 
 
-# Run
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
-
-
-
