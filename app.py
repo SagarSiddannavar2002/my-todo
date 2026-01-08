@@ -38,11 +38,13 @@ def delete(id):
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
-    todo = Todo.query.get_or_404(id)
     if request.method == 'POST':
         todo.title = request.form["title"]
+        todo=Todo.query.get(id)
+        todo.title=title
         db.session.commit()
         return redirect('/')
+     todo = Todo.query.get(id) 
     return render_template('update.html', todo=todo)
 
 # Run
@@ -51,3 +53,4 @@ if __name__ == "__main__":
         db.create_all()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
